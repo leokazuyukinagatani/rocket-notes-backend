@@ -21,4 +21,4 @@ module.exports = {
   TMP_FOLDER,
   UPLOADS_FOLDER,
   MULTER
-}
+};
