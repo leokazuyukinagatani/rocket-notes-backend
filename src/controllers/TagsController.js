@@ -12,4 +12,10 @@ class TagsController {
     
     return response.json(tags);
   }
+
+  async create( request, response )  { 
+    const {note_id, name, user_id } = request.body;
+    await knex.insert(note_id, name, user_id);
+  }
+  
 } module.exports = TagsController;
