@@ -13,9 +13,14 @@ class UserRepositoryInMemory {
     return user;
   }
 
-  async findByEmail(email) {
+  async findByEmail( email ) {
     return this.users.find(user => user.email === email);
   }
+
+  async findById( user_id ) {
+    return this.users.find(user => user.id === user_id);
+  }
+
 }
 
 module.exports = UserRepositoryInMemory;

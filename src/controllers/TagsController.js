@@ -1,21 +1,28 @@
-const { response } = require("express");
-const knex = require("../database/knex");
+const TagRepository = require("../repositories/TagRepository");
+const TagCreateService = require("../services/tag/TagCreateService");
+const TagIndexService = require("../services/tag/TagIndexService");
 
 class TagsController {
 
   async index ( request, response ) {
     const user_id  = request.user.id;
 
-    const tags = await knex("tags")
-      .where({ user_id })
-      .groupBy("name");
+    const tagRepository = new TagRepository();
+    const tagIndexService = new TagIndexService(tagRepository);
+
+    const tags = tagIndexService.execute(user_id);
     
     return response.json(tags);
   }
 
   async create( request, response )  { 
     const {note_id, name, user_id } = request.body;
-    await knex.insert(note_id, name, user_id);
+
+    const tagRepository = new TagRepository();
+    const tagCreateService = new TagCreateService(tagRepository);
+
+    await tagCreateService.execute({note_id, name, user_id});
+    return response.json();
   }
   
 } module.exports = TagsController;

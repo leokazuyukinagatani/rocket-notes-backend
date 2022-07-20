@@ -4,9 +4,17 @@ class UserRepository {
   async findByEmail( email ) {
     const database = await sqliteConnection();
 
-    const user = await database.get("SELECT * FROM users WHERE email = (?)", [email]);
+    const userSelected = await database.get("SELECT * FROM users WHERE email = (?)", [email]);
 
-    return user;
+    return userSelected;
+  }
+
+  async findById( user_id ) {
+    const database = await sqliteConnection();
+
+    const userSelected = await database.get(`SELECT * FROM users WHERE id = (?)`,[user_id]);
+
+    return userSelected;
   }
 
   async create({ name, email, password }) {
@@ -16,6 +24,22 @@ class UserRepository {
     [name, email, password]);
 
     return { id:userId };
+  }
+
+  async update({user}) {
+    const database = await sqliteConnection();
+
+    const userUpdated = database.run(`
+      UPDATE users SET
+      name = ?,
+      email = ?,
+      password = ?,
+      updated_at = DATETIME('now')
+      WHERE id = ?
+    `, [user.name, user.email, user.password, user_id]
+    );
+
+    return userUpdated;
   }
 }
 

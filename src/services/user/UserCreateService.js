@@ -1,4 +1,4 @@
-const AppError = require("../utils/AppError");
+const AppError = require("../../utils/AppError");
 const { hash } = require("bcryptjs");
 
 class UserCreateService {
@@ -15,9 +15,9 @@ class UserCreateService {
     }
    
     const hashedPassword = await hash(password, 8);
-    const userCreated = await this.userRepository.create({ name, email, password:hashedPassword });
+    const userIdCreated = await this.userRepository.create({ name, email, password:hashedPassword });
 
-    return userCreated;
+    return userIdCreated;
   }
 }
 module.exports = UserCreateService;
